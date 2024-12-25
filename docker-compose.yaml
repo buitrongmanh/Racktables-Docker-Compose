@@ -1,0 +1,35 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    volumes:
+      - /data/racktable-data/mysql:/var/lib/mysql
+#    ports:
+#      - "3306:3306"
+    restart: unless-stopped
+
+  racktables:
+#    image: racktables
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RACKTABLES_VERSION: "${RACKTABLES_VERSION}"
+    container_name: racktables
+    environment:
+      RACKTABLES_DB_HOST: "${RACKTABLES_DB_HOST}"
+      RACKTABLES_DB_USERNAME: "${MYSQL_USER}"
+      RACKTABLES_DB_PASSWORD: "${MYSQL_PASSWORD}"
+      RACKTABLES_ADMIN_PASSWD: "${RACKTABLES_ADMIN_PASSWD}"
+      RACKTABLES_DB_NAME: "${MYSQL_DATABASE}"
+      APACHE_HTTP_PORT: "${APACHE_HTTP_PORT}"
+    ports:
+      - "127.0.0.1:8081:8081"
+    restart: unless-stopped
+    depends_on:
+      - mariadb
