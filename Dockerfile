@@ -14,7 +14,7 @@
 # along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
 FROM alpine:3.15
-LABEL org.opencontainers.image.authors="manhbt@9pay.vn"
+LABEL org.opencontainers.image.authors="buitrongmanh@gmail.com"
 
 RUN apk --no-cache update \
     && apk --no-cache upgrade \
